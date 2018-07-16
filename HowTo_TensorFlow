@@ -1,0 +1,153 @@
+========================================================
+	Sangeeta Biswas
+	Post-Doc Researcher
+	Brno University of Technology, Czech Republic
+	27.6.2018
+========================================================
+Follow The following steps mentioned in https://www.tensorflow.org/install/install_linux
+
+1.	Check which python is running in machine.
+$ python -V
+Python 2.7.12
+
+2.	Install pip and Virtualenv by issuing one of the following commands:
+$ sudo apt-get install python-pip python-dev python-virtualenv # for Python 2.7
+
+3.	Make a directory for using as targetDirectory for TensorFlow
+$ mkdir /home/sangeeta/Tensorflow
+
+4.	Create a Virtualenv environment by issuing the following command:
+$ virtualenv --system-site-packages /home/sangeeta/Tensorflow # for Python 2.7
+
+5.	Check which shell is currently running.
+$ echo $0
+bash
+
+6.	Activate the Virtualenv environment by issuing the following command: 
+$ source ~/Tensorflow/bin/activate # bash, sh, ksh, or zsh
+
+** It changes the prompt to the following:
+(Tensorflow) sangeeta@sangeeta-Aspire-one-1-131:~$
+
+7.	Ensure pip ≥8.1 is installed:
+(Tensorflow) sangeeta@sangeeta-Aspire-one-1-131:~$ easy_install -U pip
+
+8.	Install TensorFlow in the active Virtualenv environment:
+(Tensorflow) sangeeta@sangeeta-Aspire-one-1-131:~$ pip install --upgrade tensorflow  # for Python 2.7
+
+9.	Deactivate tensorflow to check whether it can be deactivated.
+(Tensorflow) sangeeta@sangeeta-Aspire-one-1-131:~$ deactivate
+sangeeta@sangeeta-Aspire-one-1-131:~$
+
+10.	Make a directory to keep tensorflow programs.
+$ mkdir /home/sangeeta/Programming/TensorFlow
+
+11.	Change to the TensorFlow directory
+$ cd /home/sangeeta/Programming/TensorFlow
+
+12.	Write a simple python program to validate tensorflow installation
+$ gedit FirstTF.py&
+
+========= FirstTF.py ========================
+#!/home/sangeeta/Tensorflow/bin/python
+
+import tensorflow as tf
+hello = tf.constant('Hello, TensorFlow!')
+sess = tf.Session()
+print(sess.run(hello))
+close(sess)
+=============================================
+
+13.	Make the python program executable
+$ chmod +x FirstTF.py
+
+14.	Run the python program
+$ ./FirstTF.py 
+================= ERROR!!!!==================
+Traceback (most recent call last):
+  File "./FirstTF.py", line 3, in <module>
+    import tensorflow as tf
+ImportError: No module named tensorflow
+=============================================
+
+============ SOLUTION =======================
+According to the following site 
+https://github.com/tensorflow/tensorflow/issues/19766,
+my CPU does not support AVX (Advanced Vector Extensions). 
+So I need to install lower version (like V1.5) of TensorFlow.
+
+Steps:
+-----------
+1.	Check whether CPU supports AVX or not
+$ grep flags /proc/cpuinfo
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm sse4_1 sse4_2 movbe popcnt tsc_deadline_timer aes rdrand lahf_lm 3dnowprefetch epb pti retpoline tpr_shadow vnmi flexpriority ept vpid tsc_adjust smep erms dtherm ida arat
+
+$ grep flags | grep avx
+[[[NOTHING]]]
+ 
+3.	Activate tensorflow 
+$ source ~/Tensorflow/bin/activate
+(Tensorflow) sangeeta@sangeeta-Aspire-one-1-131:~/Programming/TensorFlow$
+
+4.	Check the version of the Tensorflow installed in the machine
+(Tensorflow) sangeeta@sangeeta-Aspire-one-1-131:~/Programming/TensorFlow$ pip show tensorflow
+Name: tensorflow
+Version: 1.8.0
+Summary: TensorFlow helps the tensors flow
+Home-page: https://www.tensorflow.org/
+Author: Google Inc.
+Author-email: opensource@google.com
+License: Apache 2.0
+Location: /home/sangeeta/Tensorflow/lib/python2.7/site-packages
+Requires: astor, protobuf, gast, tensorboard, six, wheel, absl-py, backports.weakref, termcolor, enum34, numpy, grpcio, mock
+Required-by: 
+
+5. Install lower version
+(Tensorflow) sangeeta@sangeeta-Aspire-one-1-131:~/Programming/TensorFlow$ pip install tensorflow==1.5
+
+*** It will install 1.5 uninstalling 1.8
+Installing collected packages: tensorflow-tensorboard, tensorflow
+  Found existing installation: tensorflow 1.8.0
+    Uninstalling tensorflow-1.8.0:
+      Successfully uninstalled tensorflow-1.8.0
+Successfully installed tensorflow-1.5.0 tensorflow-tensorboard-1.5.1
+
+6. Check the installed version.
+(Tensorflow) sangeeta@sangeeta-Aspire-one-1-131:~/Programming/TensorFlow$ pip show tensorflow
+Name: tensorflow
+Version: 1.5.0
+Summary: TensorFlow helps the tensors flow
+Home-page: https://www.tensorflow.org/
+Author: Google Inc.
+Author-email: opensource@google.com
+License: Apache 2.0
+Location: /home/sangeeta/Tensorflow/lib/python2.7/site-packages
+Requires: protobuf, six, wheel, absl-py, backports.weakref, numpy, tensorflow-tensorboard, enum34, mock
+Required-by: 
+
+7.	Deactivate TensorFlow.
+(Tensorflow) sangeeta@sangeeta-Aspire-one-1-131:~/Programming/TensorFlow$ deactivate
+sangeeta@sangeeta-Aspire-one-1-131:~/Programming/TensorFlow$
+
+8. Run the above simple python program.
+sangeeta@sangeeta-Aspire-one-1-131:~/Programming/TensorFlow$ ./FirstTF.py
+2018-06-27 15:12:16.250048: I tensorflow/core/platform/cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2
+Hello, TensorFlow!
+
+*** It is necessary to write the path of python installed in the Virtualenv environment, instead of the
+default python. Otherwise we will get error message. 
+For example, if we use the following shebang
+ 
+#!/usr/local/python
+
+instead of 
+
+#!/home/sangeeta/Tensorflow/bin/python
+
+we will get the following error message
+=============== ERROR !!! ===================
+Traceback (most recent call last):
+  File "./FirstTF.py", line 4, in <module>
+    import tensorflow as tf
+ImportError: No module named tensorflow
+=============================================
