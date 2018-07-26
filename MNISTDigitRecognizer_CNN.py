@@ -44,9 +44,9 @@ import numpy as np
 #	2.	Declare constants.
 CLASS_NO = 10
 CONV_LAYER = 1
-FILTER_NO = [16, 6]
-KERNEL_SZ = [3, 3]
-STRIDE = [1, 1]
+FILTER_NO = [16]
+KERNEL_SZ = [3]
+STRIDE = [1]
 FC_LAYER = 3
 HUNIT_NO = [512, 100, 50]
 EPOCH_NO = 1
