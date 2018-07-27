@@ -1,9 +1,14 @@
-#!/home/sangeeta/Tensorflow/bin/python
+#!/home/sangeeta/TensorFlow/venv/bin/python
 
 #	========================================================
 #	Purpose: To learn how to use CLAHE of OpenCV on an image
 #	loaded by using TensorFlow + Keras and display it 
-#	using matplotlib.		
+#	using matplotlib.	
+#	--------------------------------------------------------
+#	Note:
+#		1.	Install OpenCV for python if it has not 
+#			been installed yet.
+#			$ pip3 install python-opencv 
 #	--------------------------------------------------------
 #	Sangeeta Biswas
 #	Post-Doc Researcher
@@ -24,7 +29,7 @@ GRAYSCALE = False	#	Color Image --> False,
 					#	GrayScale Image --> True
 
 #	3.	Load an image file.
-imgFile = "/home/sangeeta/retinaImage1.jpg"
+imgFile = "/home/sangeeta/RetinaDatabase/retinaImage1.jpg"
 img	=	tf.keras.preprocessing.image.load_img(
 			imgFile,
 			grayscale = GRAYSCALE,	
@@ -38,24 +43,24 @@ img	=	tf.keras.preprocessing.image.load_img(
 img = np.array(img)
 claheImg = np.zeros(img.shape)
 clahe = cv2.createCLAHE(clipLimit = 2.0, tileGridSize = (8,8))
-claheImg[:,:,0] = clahe.apply(img[:,:,0])
-claheImg[:,:,1] = clahe.apply(img[:,:,1])
-claheImg[:,:,2] = clahe.apply(img[:,:,2])
-
-claheImg = claheImg.astype(np.float32)
-claheImg /= 255
+print('Max Pixel Value: {} & Min Pixel Value: {}'.format(img.max(), img.min()))
+for i in range(3):
+	claheImg[:,:,i] = clahe.apply(img[:,:,i])
+print('Max Pixel Value: {} & Min Pixel Value: {}'.format(claheImg.max(), claheImg.min()))
+claheImg = (claheImg - claheImg.min()) / (claheImg.max()-claheImg.min())
+print('Max Pixel Value: {} & Min Pixel Value: {}'.format(claheImg.max(), claheImg.min()))
 
 #	6.	Display loaded image after CLAHE.
 fig = plt.figure(figsize = (10,10))
 
 subPlt1 = fig.add_subplot(1, 2, 1)
-subPlt1.set_title('RGB')
+subPlt1.set_title('Before applying CLAHE')
 plt.xticks([])
 plt.yticks([])
 plt.imshow(img)
 
 subPlt2 = fig.add_subplot(1, 2, 2)
-subPlt2.set_title('CLAHE')
+subPlt2.set_title('After applying CLAHE')
 plt.xticks([])
 plt.yticks([])
 plt.imshow(claheImg)
