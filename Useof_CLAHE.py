@@ -6,8 +6,8 @@
 #	using matplotlib.	
 #	--------------------------------------------------------
 #	Note:
-#		1.	Install OpenCV for python if it has not 
-#			been installed yet.
+#		1.	Install OpenCV for python if it has not been
+#			installed yet.
 #			$ pip3 install python-opencv 
 #	--------------------------------------------------------
 #	Sangeeta Biswas
